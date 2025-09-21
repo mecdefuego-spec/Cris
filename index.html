@@ -218,9 +218,27 @@
 
     /* Ajustes móviles */
     @media (max-width:480px){
-      .main-svg { width: 320px; }
-      .luna { width: 260px; height:260px; top:6vh; }
-      .montana { height: 60vh; transform: translateX(-40vw); }
+      .main-svg { width: 90vw; max-width: 340px; }
+      .luna { width: 180px; height:180px; top:6vh; }
+      .montana { height: 38vh; transform: translateX(-40vw); }
+      #pantalla-inicio {
+        min-height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+      #btn-iniciar {
+        margin: 0 auto !important;
+        display: block !important;
+        max-width: 90vw !important;
+      }
+      .texto-dorado, .texto-doradoo {
+        font-size: 1rem !important;
+        max-width: 95vw !important;
+        padding: 0.7em 0.5em !important;
+        top: 78vh !important;
+      }
     }
 
   </style>
@@ -352,13 +370,14 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
   </svg>
 
   <script>
-    // Generar estrellas con titilación independiente y colores variados cercanos al blanco
+    // Generar menos estrellas en móviles para mayor fluidez
     const starsContainer = document.getElementById('stars');
     const starColors = ["#ffffff", "#f8f8ff", "#e8f8ff", "#fff7f0", "#f4f4ff", "#f9f9f9", "#eaf6ff", "#f6faff"];
     function randomColor() {
       return starColors[Math.floor(Math.random() * starColors.length)];
     }
-    for (let i = 0; i < 120; i++) {
+    let starCount = window.innerWidth < 500 ? 40 : 120;
+    for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
       star.className = 'estrella';
       const size = Math.random() * 2 + 0.6;
@@ -367,11 +386,11 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
       star.style.top = `${Math.random() * 100}vh`;
       star.style.left = `${Math.random() * 100}vw`;
       star.style.background = randomColor();
-      // Parpadeo más notorio
-      const minOpacity = 0.05 + Math.random() * 0.15;
-      const maxOpacity = 0.85 + Math.random() * 0.15;
+      // Parpadeo más suave
+      const minOpacity = 0.15 + Math.random() * 0.15;
+      const maxOpacity = 0.75 + Math.random() * 0.15;
       // Animación personalizada para cada estrella
-      const duration = 1.5 + Math.random() * 2.5;
+      const duration = 2.5 + Math.random() * 2.5;
       const delay = Math.random() * 5;
       star.style.animation = `titilar${i} ${duration}s infinite alternate`;
       star.style.animationDelay = `${delay}s`;
@@ -379,7 +398,7 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
       const keyframes = document.createElement('style');
       keyframes.innerHTML = `@keyframes titilar${i} {
         0% { opacity: ${minOpacity}; filter: drop-shadow(0 0 2px ${randomColor()}); }
-        50% { opacity: ${maxOpacity}; filter: drop-shadow(0 0 16px ${randomColor()}); }
+        50% { opacity: ${maxOpacity}; filter: drop-shadow(0 0 10px ${randomColor()}); }
         100% { opacity: ${minOpacity}; filter: drop-shadow(0 0 2px ${randomColor()}); }
       }`;
       document.head.appendChild(keyframes);
@@ -388,29 +407,28 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
 
     // Generar 20 capas de pasto animado al frente de la montaña
     const montanaContenedor = document.getElementById('capas-pasto');
-    for(let i=0; i<20; i++){
-    const div = document.createElement('div');
-    div.className = 'montana-capa';
-    div.style.zIndex = 3 + i/20;
-    div.style.animation = `viento-pasto${i} ${7+0.3*i}s ease-in-out infinite alternate`;
-    // Colores más claros para el pasto
-    const verdeClaro = 120 + i*3;
-    const verde2Claro = 220 - i*2;
-    const colorClaro = `rgb(${verdeClaro>255?255:verdeClaro},${verde2Claro>255?255:verde2Claro},120)`;
-    // Elevar las capas sumando un desplazamiento negativo a los valores Y
-  // Separar más las capas a medida que bajan
-  // Desplazar más abajo y oscurecer progresivamente
-  const yOffset = -12 + i * 2.7;
-  // Color verde vivo al principio, más oscuro y saturado al final
-  const verdeBase = 60;
-  const verdeOscuro = 10;
-  const verde = Math.round(verdeBase - (verdeBase-verdeOscuro)*(i/19));
-  const verde2Base = 200;
-  const verde2Oscuro = 60;
-  const verde2 = Math.round(verde2Base - (verde2Base-verde2Oscuro)*(i/19));
-  const colorGradual = `rgb(${verde},${verde2},30)`;
-  div.innerHTML = `<svg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 ${100+yOffset} Q18 ${78+yOffset} 36 ${66+yOffset} Q52 ${50+yOffset} 68 ${60+yOffset} Q84 ${65+yOffset} 100 ${72+yOffset} L100 ${100+yOffset} L0 ${100+yOffset} Z' fill='${colorGradual}' opacity='${0.5+0.01*i}'/></svg>`;
-      // Animación única para cada capa
+    let pastoCount = window.innerWidth < 500 ? 8 : 20;
+    for(let i=0; i<pastoCount; i++){
+      const div = document.createElement('div');
+      div.className = 'montana-capa';
+      div.style.zIndex = 3 + i/pastoCount;
+      div.style.animation = `viento-pasto${i} ${8+0.5*i}s cubic-bezier(.77,.2,.18,1) infinite alternate`;
+      // Colores más claros para el pasto
+      const verdeClaro = 120 + i*3;
+      const verde2Claro = 220 - i*2;
+      const colorClaro = `rgb(${verdeClaro>255?255:verdeClaro},${verde2Claro>255?255:verde2Claro},120)`;
+      // Elevar las capas sumando un desplazamiento negativo a los valores Y
+      const yOffset = -12 + i * 2.7;
+      // Color verde vivo al principio, más oscuro y saturado al final
+      const verdeBase = 60;
+      const verdeOscuro = 10;
+      const verde = Math.round(verdeBase - (verdeBase-verdeOscuro)*(i/(pastoCount-1)));
+      const verde2Base = 200;
+      const verde2Oscuro = 60;
+      const verde2 = Math.round(verde2Base - (verde2Base-verde2Oscuro)*(i/(pastoCount-1)));
+      const colorGradual = `rgb(${verde},${verde2},30)`;
+      div.innerHTML = `<svg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 ${100+yOffset} Q18 ${78+yOffset} 36 ${66+yOffset} Q52 ${50+yOffset} 68 ${60+yOffset} Q84 ${65+yOffset} 100 ${72+yOffset} L100 ${100+yOffset} L0 ${100+yOffset} Z' fill='${colorGradual}' opacity='${0.5+0.01*i}'/></svg>`;
+      // Animación única para cada capa, más suave
       const style = document.createElement('style');
       style.innerHTML = `@keyframes viento-pasto${i} {
         0%   { transform: translateX(-50vw) skewX(${-2+i/5}deg) scaleY(1) scaleX(1); }
