@@ -136,7 +136,7 @@
     .texto-dorado {
       position: absolute;
       left: 50%;
-      top: 80vh;
+      top: 83vh;
       transform: translateX(-50%);
       font-size: 1.18rem;
       font-family: 'Segoe UI', 'Arial', sans-serif;
@@ -172,7 +172,7 @@
         .texto-doradoo {
       position: absolute;
       left: 50%;
-      top: 75vh;
+      top: 78vh;
       transform: translateX(-50%);
       font-size: 1.18rem;
       font-family: 'Segoe UI', 'Arial', sans-serif;
@@ -218,24 +218,9 @@
 
     /* Ajustes móviles */
     @media (max-width:480px){
-      .main-svg { width: 90vw; max-width: 340px; }
-      .luna { width: 180px; height:180px; top:6vh; }
-      .montana { height: 38vh; transform: translateX(-40vw); }
-      #pantalla-inicio {
-        min-height: 100vh !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: center !important;
-      }
-      /* Oculta el texto decorativo en móvil para evitar superposición */
-      .texto-doradoo { display: none !important; }
-      .texto-dorado {
-        font-size: 1rem !important;
-        max-width: 95vw !important;
-        padding: 0.7em 0.5em !important;
-        top: 78vh !important;
-      }
+      .main-svg { width: 320px; }
+      .luna { width: 260px; height:260px; top:6vh; }
+      .montana { height: 60vh; transform: translateX(-40vw); }
     }
 
   </style>
@@ -244,17 +229,25 @@
   <!-- Pantalla de inicio -->
   <div id="pantalla-inicio" style="position:fixed; inset:0; background:#000; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition:transform 1s cubic-bezier(.77,.2,.18,1), opacity 0.6s;">
     
-  <div style="width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;">
-    <div style="color:#FFD700; font-size:1.7rem; font-family:'Segoe UI',Arial,sans-serif; text-align:center; max-width:90vw; text-shadow:0 0 8px #fff8c0,0 0 16px #ffd700,0 0 32px #fff8c0; font-weight:bold; cursor:pointer;">Bienvenida Cristel 🌻<br><span style='font-size:1.15rem;'>Toca la pantalla para entrar</span></div>
-  </div>
+  <button id="btn-iniciar" style="padding:1.2em 2.5em; font-size:1.5rem; font-family:'Segoe UI',Arial,sans-serif; color:#fff; background:linear-gradient(90deg,#fff8c0,#ffd700,#fff8c0); border:none; border-radius:2em; box-shadow:0 2px 16px #0006; cursor:pointer; font-weight:bold; transition:background 0.3s;">Haz clic aquí</button>
   </div>
   <!-- Reproductor de música integrado -->
   <audio id="musica-fondo" src="rains.mp3" loop style="display:none;"></audio>
   <script>
-    // Pantalla de inicio sin botones
+    // Pantalla de inicio y botón
     document.addEventListener('DOMContentLoaded', function() {
       var inicio = document.getElementById('pantalla-inicio');
+      var btn = document.getElementById('btn-iniciar');
       var audio = document.getElementById('musica-fondo');
+      btn.addEventListener('click', function() {
+        // Iniciar música
+        audio.play();
+        // Ocultar pantalla de inicio y mostrar escenario
+  // Animación suave en Y
+  inicio.style.transform = 'translateY(-100vh)';
+  inicio.style.opacity = '0';
+  setTimeout(function(){ inicio.style.display = 'none'; }, 1000);
+      });
       // Ocultar el resto del escenario hasta iniciar
       var elementos = [
         document.getElementById('stars'),
@@ -265,19 +258,7 @@
         document.querySelector('.texto-dorado')
       ];
       elementos.forEach(function(el){ if(el) el.style.visibility = 'hidden'; });
-      // Al tocar/clic en cualquier parte de la pantalla de inicio
-      inicio.addEventListener('click', function(){
-        audio.play();
-        inicio.style.transform = 'translateY(-100vh)';
-        inicio.style.opacity = '0';
-        setTimeout(function(){ inicio.style.display = 'none'; }, 1000);
-        elementos.forEach(function(el){ if(el) el.style.visibility = 'visible'; });
-      });
-      inicio.addEventListener('touchstart', function(){
-        audio.play();
-        inicio.style.transform = 'translateY(-100vh)';
-        inicio.style.opacity = '0';
-        setTimeout(function(){ inicio.style.display = 'none'; }, 1000);
+      btn.addEventListener('click', function(){
         elementos.forEach(function(el){ if(el) el.style.visibility = 'visible'; });
       });
     });
@@ -301,7 +282,7 @@
       }
     });
   </script>
-       <div style="color:#FFD700; font-size:1.35rem; font-family:'Segoe UI',Arial,sans-serif; text-align:center; max-width:90vw; text-shadow:0 0 8px #fff8c0,0 0 16px #ffd700,0 0 32px #fff8c0; font-weight:bold; position:absolute; left:30vw; top:40vh; cursor:pointer;">Bienvenida Cristel 🌻<br><span style='font-size:1.1rem;'>Toca la pantalla para entrar</span></div>
+
   <!-- Estrellas (contenedor en fondo) -->
   <div id="stars" aria-hidden="true"></div>
 
@@ -347,7 +328,7 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
     <g class="flor" aria-hidden="true">
       <path class="tallo" d="M200 430 C212 340, 188 290, 200 190"/>
       <ellipse class="hoja" cx="175" cy="335" rx="26" ry="14" transform="rotate(-20 170 335)"/>
-      <ellipse class="hoja" cx="221" cy="280" rx="26" ry="14" transform="rotate(30 230 280)"/>
+      <ellipse class="hoja" cx="222" cy="280" rx="26" ry="14" transform="rotate(30 230 280)"/>
       <!-- Pétalos de girasol -->
       <g>
         <g>
@@ -371,14 +352,13 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
   </svg>
 
   <script>
-    // Generar menos estrellas en móviles para mayor fluidez
+    // Generar estrellas con titilación independiente y colores variados cercanos al blanco
     const starsContainer = document.getElementById('stars');
     const starColors = ["#ffffff", "#f8f8ff", "#e8f8ff", "#fff7f0", "#f4f4ff", "#f9f9f9", "#eaf6ff", "#f6faff"];
     function randomColor() {
       return starColors[Math.floor(Math.random() * starColors.length)];
     }
-    let starCount = window.innerWidth < 500 ? 40 : 120;
-    for (let i = 0; i < starCount; i++) {
+    for (let i = 0; i < 120; i++) {
       const star = document.createElement('div');
       star.className = 'estrella';
       const size = Math.random() * 2 + 0.6;
@@ -387,11 +367,11 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
       star.style.top = `${Math.random() * 100}vh`;
       star.style.left = `${Math.random() * 100}vw`;
       star.style.background = randomColor();
-      // Parpadeo más suave
-      const minOpacity = 0.15 + Math.random() * 0.15;
-      const maxOpacity = 0.75 + Math.random() * 0.15;
+      // Parpadeo más notorio
+      const minOpacity = 0.05 + Math.random() * 0.15;
+      const maxOpacity = 0.85 + Math.random() * 0.15;
       // Animación personalizada para cada estrella
-      const duration = 2.5 + Math.random() * 2.5;
+      const duration = 1.5 + Math.random() * 2.5;
       const delay = Math.random() * 5;
       star.style.animation = `titilar${i} ${duration}s infinite alternate`;
       star.style.animationDelay = `${delay}s`;
@@ -399,7 +379,7 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
       const keyframes = document.createElement('style');
       keyframes.innerHTML = `@keyframes titilar${i} {
         0% { opacity: ${minOpacity}; filter: drop-shadow(0 0 2px ${randomColor()}); }
-        50% { opacity: ${maxOpacity}; filter: drop-shadow(0 0 10px ${randomColor()}); }
+        50% { opacity: ${maxOpacity}; filter: drop-shadow(0 0 16px ${randomColor()}); }
         100% { opacity: ${minOpacity}; filter: drop-shadow(0 0 2px ${randomColor()}); }
       }`;
       document.head.appendChild(keyframes);
@@ -408,28 +388,29 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
 
     // Generar 20 capas de pasto animado al frente de la montaña
     const montanaContenedor = document.getElementById('capas-pasto');
-    let pastoCount = window.innerWidth < 500 ? 8 : 20;
-    for(let i=0; i<pastoCount; i++){
-      const div = document.createElement('div');
-      div.className = 'montana-capa';
-      div.style.zIndex = 3 + i/pastoCount;
-      div.style.animation = `viento-pasto${i} ${8+0.5*i}s cubic-bezier(.77,.2,.18,1) infinite alternate`;
-      // Colores más claros para el pasto
-      const verdeClaro = 120 + i*3;
-      const verde2Claro = 220 - i*2;
-      const colorClaro = `rgb(${verdeClaro>255?255:verdeClaro},${verde2Claro>255?255:verde2Claro},120)`;
-      // Elevar las capas sumando un desplazamiento negativo a los valores Y
-      const yOffset = -12 + i * 2.7;
-      // Color verde vivo al principio, más oscuro y saturado al final
-      const verdeBase = 60;
-      const verdeOscuro = 10;
-      const verde = Math.round(verdeBase - (verdeBase-verdeOscuro)*(i/(pastoCount-1)));
-      const verde2Base = 200;
-      const verde2Oscuro = 60;
-      const verde2 = Math.round(verde2Base - (verde2Base-verde2Oscuro)*(i/(pastoCount-1)));
-      const colorGradual = `rgb(${verde},${verde2},30)`;
-      div.innerHTML = `<svg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 ${100+yOffset} Q18 ${78+yOffset} 36 ${66+yOffset} Q52 ${50+yOffset} 68 ${60+yOffset} Q84 ${65+yOffset} 100 ${72+yOffset} L100 ${100+yOffset} L0 ${100+yOffset} Z' fill='${colorGradual}' opacity='${0.5+0.01*i}'/></svg>`;
-      // Animación única para cada capa, más suave
+    for(let i=0; i<20; i++){
+    const div = document.createElement('div');
+    div.className = 'montana-capa';
+    div.style.zIndex = 3 + i/20;
+    div.style.animation = `viento-pasto${i} ${7+0.3*i}s ease-in-out infinite alternate`;
+    // Colores más claros para el pasto
+    const verdeClaro = 120 + i*3;
+    const verde2Claro = 220 - i*2;
+    const colorClaro = `rgb(${verdeClaro>255?255:verdeClaro},${verde2Claro>255?255:verde2Claro},120)`;
+    // Elevar las capas sumando un desplazamiento negativo a los valores Y
+  // Separar más las capas a medida que bajan
+  // Desplazar más abajo y oscurecer progresivamente
+  const yOffset = -12 + i * 2.7;
+  // Color verde vivo al principio, más oscuro y saturado al final
+  const verdeBase = 60;
+  const verdeOscuro = 10;
+  const verde = Math.round(verdeBase - (verdeBase-verdeOscuro)*(i/19));
+  const verde2Base = 200;
+  const verde2Oscuro = 60;
+  const verde2 = Math.round(verde2Base - (verde2Base-verde2Oscuro)*(i/19));
+  const colorGradual = `rgb(${verde},${verde2},30)`;
+  div.innerHTML = `<svg viewBox='0 0 100 100' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'><path d='M0 ${100+yOffset} Q18 ${78+yOffset} 36 ${66+yOffset} Q52 ${50+yOffset} 68 ${60+yOffset} Q84 ${65+yOffset} 100 ${72+yOffset} L100 ${100+yOffset} L0 ${100+yOffset} Z' fill='${colorGradual}' opacity='${0.5+0.01*i}'/></svg>`;
+      // Animación única para cada capa
       const style = document.createElement('style');
       style.innerHTML = `@keyframes viento-pasto${i} {
         0%   { transform: translateX(-50vw) skewX(${-2+i/5}deg) scaleY(1) scaleX(1); }
@@ -444,6 +425,8 @@ Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </d
   </script>
 </body>
 </html>
+
+
 
 
 
