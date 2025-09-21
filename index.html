@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     :root{
-      --flower-scale: 0.95;   /* escala de la flor (ajusta aquí) */
+  --flower-scale: 1.15;   /* escala de la flor (ajusta aquí) */
       --dome-scale: 1.00;     /* escala de la cúpula (ajusta aquí) */
       --mountain-height: 80vh;/* altura de la montaña responsive */
     }
@@ -52,8 +52,8 @@
       top: 5vh;
       left: 50%;
       transform: translateX(-50%);
-      width: 480px;
-      height: 480px;
+      width: 450px;
+      height: 450px;
       background: rgb(246, 250, 196);
       border-radius: 50%;
       opacity: 0.9;
@@ -133,6 +133,83 @@
       animation: ondular 11s ease-in-out infinite alternate;
       pointer-events: none;
     }
+    .texto-dorado {
+      position: absolute;
+      left: 50%;
+      top: 83vh;
+      transform: translateX(-50%);
+      font-size: 1.18rem;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: #FFD700;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-shadow:
+        0 0 8px #fff8c0,
+        0 0 16px #ffd700,
+        0 0 32px #fff8c0;
+      background: linear-gradient(90deg, #fff8c0 0%, #ffd700 40%, #fff8c0 60%, #ffd700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      animation: brillo-dorado 2.5s linear infinite;
+      z-index: 20;
+      pointer-events: none !important;
+      user-select: none !important;
+      touch-action: none !important;
+      outline: none !important;
+      tab-index: -1;
+      max-width: 900px;
+      width: 90vw;
+      margin-left: 3vw;
+      margin-right: 3vw;
+      padding: 1em 2em;
+      text-align: center;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+        .texto-doradoo {
+      position: absolute;
+      left: 50%;
+      top: 78vh;
+      transform: translateX(-50%);
+      font-size: 1.18rem;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      color: #FFD700;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-shadow:
+        0 0 8px #fff8c0,
+        0 0 16px #ffd700,
+        0 0 32px #fff8c0;
+      background: linear-gradient(90deg, #fff8c0 0%, #ffd700 40%, #fff8c0 60%, #ffd700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      animation: brillo-dorado 2.5s linear infinite;
+      z-index: 20;
+      pointer-events: none !important;
+      user-select: none !important;
+      touch-action: none !important;
+      outline: none !important;
+      tab-index: -1;
+      max-width: 900px;
+      width: 90vw;
+      margin-left: 3vw;
+      margin-right: 3vw;
+      padding: 1em 2em;
+      text-align: center;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+
+    @keyframes brillo-dorado {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
     @keyframes ondular {
       0%   { transform: scale(var(--flower-scale)) rotate(-2deg); }
       50%  { transform: scale(var(--flower-scale)) rotate(2deg); }
@@ -149,6 +226,62 @@
   </style>
 </head>
 <body>
+  <!-- Pantalla de inicio -->
+  <div id="pantalla-inicio" style="position:fixed; inset:0; background:#000; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center; transition:transform 1s cubic-bezier(.77,.2,.18,1), opacity 0.6s;">
+    
+  <button id="btn-iniciar" style="padding:1.2em 2.5em; font-size:1.5rem; font-family:'Segoe UI',Arial,sans-serif; color:#fff; background:linear-gradient(90deg,#fff8c0,#ffd700,#fff8c0); border:none; border-radius:2em; box-shadow:0 2px 16px #0006; cursor:pointer; font-weight:bold; transition:background 0.3s;">Haz clic aquí</button>
+  </div>
+  <!-- Reproductor de música integrado -->
+  <audio id="musica-fondo" src="rains.mp3" loop style="display:none;"></audio>
+  <script>
+    // Pantalla de inicio y botón
+    document.addEventListener('DOMContentLoaded', function() {
+      var inicio = document.getElementById('pantalla-inicio');
+      var btn = document.getElementById('btn-iniciar');
+      var audio = document.getElementById('musica-fondo');
+      btn.addEventListener('click', function() {
+        // Iniciar música
+        audio.play();
+        // Ocultar pantalla de inicio y mostrar escenario
+  // Animación suave en Y
+  inicio.style.transform = 'translateY(-100vh)';
+  inicio.style.opacity = '0';
+  setTimeout(function(){ inicio.style.display = 'none'; }, 1000);
+      });
+      // Ocultar el resto del escenario hasta iniciar
+      var elementos = [
+        document.getElementById('stars'),
+        document.querySelector('.luna'),
+        document.querySelector('.montana'),
+        document.getElementById('capas-pasto'),
+        document.querySelector('.main-svg'),
+        document.querySelector('.texto-dorado')
+      ];
+      elementos.forEach(function(el){ if(el) el.style.visibility = 'hidden'; });
+      btn.addEventListener('click', function(){
+        elementos.forEach(function(el){ if(el) el.style.visibility = 'visible'; });
+      });
+    });
+  </script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      var audio = document.getElementById('musica-fondo');
+      var playAudio = function() {
+        audio.play();
+        document.removeEventListener('click', playAudio);
+        document.removeEventListener('touchstart', playAudio);
+      };
+      // Intentar reproducir automáticamente
+      var promise = audio.play();
+      if (promise !== undefined) {
+        promise.catch(function() {
+          // Si el navegador bloquea el autoplay, esperar interacción
+          document.addEventListener('click', playAudio);
+          document.addEventListener('touchstart', playAudio);
+        });
+      }
+    });
+  </script>
 
   <!-- Estrellas (contenedor en fondo) -->
   <div id="stars" aria-hidden="true"></div>
@@ -166,7 +299,10 @@
                L100 100 L0 100 Z"/>
     </svg>
   </div>
-
+  <!-- TEXTO DORADO DECORATIVO -->
+  <div class="texto-doradoo"> Para Cristel Noelia</div>
+      <div class="texto-dorado">Este 21 de septiembre quiero dedicarte un girasol.
+Un símbolo de luz y alegría, lo mismo que tú inspiras y despiertas en mí </div>
   <!-- Capas de pasto animadas y cada vez más oscuras (al frente) -->
   <div id="capas-pasto" aria-hidden="true"></div>
 
@@ -188,17 +324,30 @@
   <ellipse cx="200" cy="455" rx="110" ry="32" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.7)" stroke-width="3"/>
   <path class="cristal" d="M90 455 a110 32 0 0 1 220 0 v-300 a110 110 0 0 0 -220 0 z"/>
 
-    <!-- Flor -->
+    <!-- Flor (girasol, solo pétalos y centro) -->
     <g class="flor" aria-hidden="true">
-      <path class="tallo" d="M200 480 C210 380, 190 320, 200 240"/>
-      <ellipse class="hoja" cx="175" cy="330" rx="22" ry="11" transform="rotate(-20 175 330)"/>
-      <ellipse class="hoja" cx="225" cy="290" rx="22" ry="11" transform="rotate(30 225 290)"/>
-      <circle class="petalo" cx="200" cy="220" r="18"/>
-      <ellipse class="petalo" cx="190" cy="200" rx="14" ry="20" transform="rotate(-30 190 200)"/>
-      <ellipse class="petalo" cx="210" cy="200" rx="14" ry="20" transform="rotate(30 210 200)"/>
-      <ellipse class="petalo" cx="200" cy="190" rx="12" ry="18"/>
-      <ellipse class="petalo" cx="185" cy="215" rx="16" ry="20" transform="rotate(-15 185 215)"/>
-      <ellipse class="petalo" cx="215" cy="215" rx="16" ry="20" transform="rotate(15 215 215)"/>
+      <path class="tallo" d="M200 430 C212 340, 188 290, 200 190"/>
+      <ellipse class="hoja" cx="175" cy="335" rx="26" ry="14" transform="rotate(-20 170 335)"/>
+      <ellipse class="hoja" cx="221" cy="280" rx="26" ry="14" transform="rotate(30 230 280)"/>
+      <!-- Pétalos de girasol -->
+      <g>
+        <g>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(0 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(30 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(60 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(90 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(120 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(150 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(180 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(210 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(240 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(270 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(300 200 190)"/>
+          <ellipse class="petalo" cx="200" cy="190" rx="16" ry="44" fill="#FFD600" stroke="#B28900" stroke-width="2" transform="rotate(330 200 190)"/>
+        </g>
+        <!-- Centro marrón -->
+        <circle cx="200" cy="190" r="22" fill="#6D4C23" stroke="#B28900" stroke-width="2"/>
+      </g>
     </g>
   </svg>
 
@@ -276,3 +425,4 @@
   </script>
 </body>
 </html>
+
